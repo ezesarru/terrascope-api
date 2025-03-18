@@ -3,7 +3,6 @@ const fs = require("fs");
 const path = require("path");
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
 
-// SQL Connection
 const sequelize = new Sequelize(
   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
   {
@@ -16,7 +15,6 @@ sequelize
   .then(() => console.log("Successful connection"))
   .catch((error) => console.error("Failed connection", error));
 
-// Models import
 const basename = path.basename(__filename);
 const modelDefiners = [];
 fs.readdirSync(path.join(__dirname, "/models"))
@@ -29,10 +27,6 @@ fs.readdirSync(path.join(__dirname, "/models"))
     modelDefiners.push(model);
   });
 
-// Initialize models
 modelDefiners.forEach((model) => model(sequelize));
-
-// Models relations
-// const { example } = sequelize.models;
 
 module.exports = { ...sequelize.models, connection: sequelize };
