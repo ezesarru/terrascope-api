@@ -7,8 +7,8 @@ const getCountry = async ({
   order,
   orderType,
   continent,
-  pageNumber,
-  itemsPerPage,
+  pageNumber = 1,
+  itemsPerPage = 10,
 }) => {
   try {
     // Fetch a country by ID
