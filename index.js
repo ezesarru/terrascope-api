@@ -6,7 +6,7 @@ const { PORT } = process.env;
 
 (startServer = async () => {
   try {
-    await connection.sync({ force: false }); // true borra
+    await connection.sync({ force: true }); // true borra
     await saveData();
     server.listen(PORT, () => console.log(`Server raised in port: ${PORT}`));
   } catch (error) {

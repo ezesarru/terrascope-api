@@ -1,8 +1,7 @@
 const { Router } = require("express");
+const countryRoute = require("./countryRoute");
 const router = Router();
 
-router.get("/", (req, res) => {
-  res.send("Welcome to the main route!");
-});
+router.use("/country", countryRoute);
 
 module.exports = router;
