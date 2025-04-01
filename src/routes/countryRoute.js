@@ -2,6 +2,6 @@ const { Router } = require("express");
 const countryRoute = Router();
 
 const getCountryHandler = require("../handlers/getCountryHandler");
-countryRoute.get("/", getCountryHandler);
+countryRoute.post("/", getCountryHandler);
 
 module.exports = countryRoute;
