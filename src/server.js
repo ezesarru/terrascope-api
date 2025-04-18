@@ -7,36 +7,27 @@ const helmet = require("helmet");
 require("dotenv").config();
 const { WEB_URL } = process.env;
 
-// CORS configuration
-const corsOptions = {
-  origin: ['https://terrascope-web.vercel.app', 'http://localhost:3000'],
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
-  preflightContinue: false,
-  optionsSuccessStatus: 204
-};
-
-// Apply CORS before other middleware
-server.use(cors(corsOptions));
-server.use(helmet({
-  crossOriginResourcePolicy: { policy: "cross-origin" }
-}));
-server.use(express.json());
-server.use(express.urlencoded({ extended: true }));
-server.use(morgan("dev"));
-
-// Add CORS headers for all responses
+server.use(helmet()); // HTTP receptor
+server.use(express.json()); // JSON reader
+server.use(express.urlencoded({ extended: true })); // x-www-form-urlencoded data parser
+server.use(morgan("dev")); // Console request status
+server.use(
+  cors({
+    origin: WEB_URL,
+    credentials: true,
+  })
+);
 server.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://terrascope-web.vercel.app');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header("Access-Control-Allow-Origin", WEB_URL);
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
   next();
 });
-
 server.use(router);
-
 server.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ message: "Something went wrong" });
