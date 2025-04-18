@@ -5,7 +5,8 @@ const cors = require("cors");
 const router = require("./routes/routesIndex");
 const helmet = require("helmet");
 require("dotenv").config();
-const { WEB_URL } = process.env;
+const { ALLOWED_ORIGINS } = process.env;
+const allowedOrigins = ALLOWED_ORIGINS ? ALLOWED_ORIGINS.split(", ") : []
 
 server.use(helmet()); // HTTP receptor
 server.use(express.json()); // JSON reader
@@ -13,7 +14,7 @@ server.use(express.urlencoded({ extended: true })); // x-www-form-urlencoded dat
 server.use(morgan("dev")); // Console request status
 server.use(
   cors({
-    origin: WEB_URL,
+    origin: allowedOrigins,
     credentials: true,
   })
 );
