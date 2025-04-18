@@ -1,22 +1,23 @@
 const { Sequelize } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
+const pg = require("pg")
 require("dotenv").config();
-const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, ENVIRONMENT } = process.env;
 
-const sequelize = new Sequelize(
-  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
-  {
-    logging: false,
-    dialect: "postgres",
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false,
-      }
-    }
+const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
+  host: DB_HOST,
+  dialect: 'postgres',
+  logging: false,
+  schema: 'public',
+  dialectModule: pg,
+  dialectOptions: {
+    ssl: ENVIRONMENT === 'PROD' ? {
+      require: true,
+      rejectUnauthorized: false
+    } : false
   }
-);
+});
 
 sequelize
   .authenticate()
