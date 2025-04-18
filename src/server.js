@@ -13,12 +13,12 @@ server.use(express.urlencoded({ extended: true })); // x-www-form-urlencoded dat
 server.use(morgan("dev")); // Console request status
 server.use(
   cors({
-    origin: "*",
+    origin: WEB_URL,
     credentials: true,
   })
 );
 server.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Origin", WEB_URL);
   res.header("Access-Control-Allow-Credentials", "true");
   res.header( 
     "Access-Control-Allow-Headers",
